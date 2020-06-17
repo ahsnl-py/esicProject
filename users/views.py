@@ -1,18 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login 
-from .forms import LoginForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserRegisterForm
 
-def user_login(request): 
-    if request.method == 'POST': #If from has been submitted
-        form = LoginForm(request.POST) # A fprm bound to the POST data
-        if form.is_valid(): #All validation rule pass
-            cd = form.cleaned_data
-            user = authenticate(request,
-                                    username=cd['username'],
-                                    password=cd['password1'])
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            
     else:
-        form = LoginForm()
+        form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
         
 
