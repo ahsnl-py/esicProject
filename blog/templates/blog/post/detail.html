@@ -6,7 +6,7 @@
     <div class="article-metadata">
       <h1>{{ post.title }}</h1> 
       <small class="text-muted"> 
-        Published {{ post.publish }} by {{ post.author }} 
+        Published {{ post.publish|date:"F d, Y" }} by {{ post.author }} 
       </small> 
     </div>
     {{ post.body|linebreaks }} 
