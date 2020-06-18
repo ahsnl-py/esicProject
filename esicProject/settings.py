@@ -124,3 +124,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ahsanul.nas@gmail.com'
+EMAIL_HOST_PASSWORD = 'RFFw4nSPvPrL9faN'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
