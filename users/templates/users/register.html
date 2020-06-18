@@ -1,21 +1,30 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
     <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Become a member</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
-            </small>
-        </div>
+        <legend class="border-bottom mb-4">About MSIC</legend>
+        <p>MSIC stands for Mechanic Student In Czech. It is an open source learning platform where
+            student are able to share notes. 
+        </p>
     </div>
 {% endblock content %}
+{% block page_register %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Become a member</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Sign Up</button>
+        </div>
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+        </small>
+    </div>
+
+{% endblock page_register %}
