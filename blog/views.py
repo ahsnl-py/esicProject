@@ -1,12 +1,9 @@
 from django.shortcuts import render, get_object_or_404 
 from django.shortcuts import render 
 from django.core.mail import send_mail
-from .models import Post
+from .models import Post, Department, Courses
 from django.contrib import messages
 from .share import EmailPostForm
-
-
-
 
 
 def post_list(request):
@@ -46,3 +43,8 @@ def post_share(request, post_id):
     return render(request, 'blog/post/share.html', {'post': post,
                                                     'form': form,
                                                     'sent': sent})
+
+def department(request): 
+    """View for department page."""
+    dept = Department.objects.all()
+    return render(request, 'blog/department.html', {'Department': dept})

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
 from taggit.managers import TaggableManager
 
 
@@ -46,3 +47,30 @@ class Post(models.Model):
                              self.publish.month,
                              self.publish.day,
                              self.slug])
+
+class Department(models.Model):
+    """Department model
+    Has many course"""
+    # Deparment name.
+    name = models.CharField(max_length=225)
+    # Department description. Optional
+    number = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99999)])
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name 
+
+class Courses(models.Model):
+    """Course model.
+    belong to Department
+    """
+    # Course title. Required
+    title = models.CharField(max_length=225)
+    # Course description. Optional. 
+    description = models.TextField(blank=True)
+    code = models.CharField(max_length=8)
+
+    def __str__(self):
+        return f"{self.code} {self.title}"
+
