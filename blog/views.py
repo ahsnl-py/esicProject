@@ -47,4 +47,11 @@ def post_share(request, post_id):
 def department(request): 
     """View for department page."""
     dept = Department.objects.all()
-    return render(request, 'blog/department.html', {'Department': dept})
+    return render(request, 'blog/department.html', {'department': dept})
+
+def course_view(request):
+    """View for course page."""
+    course = Courses.objects.get()
+    return 
+
+    
