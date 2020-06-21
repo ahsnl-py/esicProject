@@ -13,11 +13,12 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Department)
 class DeparmentAdmin(admin.ModelAdmin):
-    list_filter = ('name', 'number')
-    search_fields = ('name', 'number')
+    list_filter = ('subject',)
+    search_fields = ('name', 'dept_code')
+    ordering = ('dept_code', 'name')
 
 
 @admin.register(Courses)
 class CoursesAdmin(admin.ModelAdmin):
-    list_filter = ('title', 'code')
-    search_fields = ('title', 'code')
+    list_filter = ('dept',)
+    search_fields = ('title', 'sub_code', 'dept')

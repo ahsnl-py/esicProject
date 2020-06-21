@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404 
 from django.shortcuts import render 
 from django.core.mail import send_mail
-from .models import Post, Department, Courses
+from .models import Post, Department
 from django.contrib import messages
 from .share import EmailPostForm
 
@@ -49,9 +49,6 @@ def department(request):
     dept = Department.objects.all()
     return render(request, 'blog/department.html', {'department': dept})
 
-def course_view(request):
-    """View for course page."""
-    course = Courses.objects.get()
-    return 
+
 
     
