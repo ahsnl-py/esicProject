@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404 
 from django.shortcuts import render 
 from django.core.mail import send_mail
-from .models import Post, Department
+from .models import Post, Department, Courses
 from django.contrib import messages
 from .share import EmailPostForm
 
@@ -44,11 +44,19 @@ def post_share(request, post_id):
                                                     'form': form,
                                                     'sent': sent})
 
-def department(request): 
+
+def browse(request):
+    department = Department.objects.get()
+
+def department(request, dept_id): 
     """View for department page."""
-    dept = Department.objects.all()
+    dept = get_object_or_404(Department, id=dept_id)
     return render(request, 'blog/department.html', {'department': dept})
 
+def course_list(request, dept_id):
+    """View for list of courses"""
+    courses = Courses.objects.all()
+    return render(request, 'blog/course_list', {'course': courses})
 
 
     
