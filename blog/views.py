@@ -44,19 +44,15 @@ def post_share(request, post_id):
                                                     'form': form,
                                                     'sent': sent})
 
-
-def browse(request):
-    department = Department.objects.get()
-
-def department(request, dept_id): 
+def department(request): 
     """View for department page."""
-    dept = get_object_or_404(Department, id=dept_id)
+    dept = Department.objects.all()
     return render(request, 'blog/department.html', {'department': dept})
 
-def course_list(request, dept_id):
+def course_list(request):
     """View for list of courses"""
-    courses = Courses.objects.all()
-    return render(request, 'blog/course_list', {'course': courses})
+    courses = Courses.objects.values_list('title', 'dept_id')
+    return render(request, 'blog/course_list.html', {'course': courses})
 
 
     

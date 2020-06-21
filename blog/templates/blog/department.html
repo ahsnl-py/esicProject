@@ -6,7 +6,7 @@
     <div class="list-group">
         {% for content in department %}
             {% if content.no_courses != 0 %}
-                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <a href="{% url 'course_list' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     <p class="mb-1"><strong>{{ content.name }}</strong></p>
                     <span class="badge badge-primary badge-success">{{ content.no_courses }}</span>
                 </a>

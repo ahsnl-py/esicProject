@@ -4,10 +4,11 @@
 {% block content %}
 <legend class="border-bottom mb-4">Browse by Courses</legend>
     <div class="list-group">
-        {% for subject in courses %}
+        {% for subject in course %}
+            {% if subject.dept_id ==  %}
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <p class="mb-1"><strong>{{ subject.title }}</strong></p>
-                <span class="badge badge-primary badge-success">{{ content.no_courses }}</span>
+                <span class="badge badge-primary badge-success">1</span>
             </a>
         {% endfor %}
     </div>
