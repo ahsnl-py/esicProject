@@ -3,16 +3,16 @@
 
 
 {% block content %}
-<legend class="border-bottom mb-4">Browse by Department</legend>
+<legend class="border-bottom mb-4">Browse by Courses</legend>
     <div class="list-group">
         {% for subject, partone in part_ones.items %}
-          <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <p class="mb-1"><strong>{{ subject.subject_name }}</strong></p>
-          </a>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <p class="mb-1"><strong>{{ subject.subject_name }}</strong></p>
           <div class="float-left">
-            <a href="#" class="badge badge-primary">Discussion</a>
+            <a href="{{partone}}"" class="badge badge-primary">Discussion</a>
             <a href="#" class="badge badge-primary">File Share</a>
           </div>
+        </li>
         {% endfor %}
     </div>
 {% endblock %}

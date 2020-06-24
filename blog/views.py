@@ -22,9 +22,11 @@ def single_slug(request, single_slug):
         return render(request, "blog/departments.html", {'subject_name': matching_subjects, "part_ones": subject_urls})
 
 
-    subjects = [s.subject_slug for s in Subject.objects.all()]
-    if single_slug in subjects:
-        return HttpResponse(f'{single_slug} is a subjects!')
+    post = [p.slug for p in object_list]
+    if single_slug in post:
+        post = get_object_or_404(Post, slug=single_slug)
+
+        return render(request, 'blog/post/discussion.html', {'post': post})
 
     return HttpResponse(f"'{single_slug}' is not registesred!'")
     
