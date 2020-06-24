@@ -28,17 +28,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="#">Home</a>
+            <a class="nav-item nav-link" href="{% url 'blog:departments' %}">Department</a>
             <a class="nav-item nav-link" href="{% url 'blog:post_list' %}">Forum</a>
           </div>
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
-          <a class="nav-item nav-link" href="#">Login</a>
-          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+          <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            <!-- if not register -->
+          {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+          {% endif %}
         </div>
       </div>
     </nav>
   </header>
+
 
 <!--BLOCK CONTENT-->  
   <main role="main" class="container">
@@ -54,6 +61,7 @@
         <!--Main content page-->
         {% block content %}{% endblock %}
       </div>
+      <!-- side bar -->
         <div class="col-md-4">
           <div class="content-section">
             {% if posts or post %}
@@ -74,7 +82,13 @@
         </div> 
     </div>
   </main>
-  
+
+  <div id='container'>
+      <div id='main'>
+
+      </div>
+  </div>
+
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

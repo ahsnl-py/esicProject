@@ -126,6 +126,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGIN_URL = 'login'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'ahsanul.nas@gmail.com'
 EMAIL_HOST_PASSWORD = 'RFFw4nSPvPrL9faN'
