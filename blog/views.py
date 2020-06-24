@@ -1,9 +1,36 @@
 from django.shortcuts import render, get_object_or_404 
 from django.shortcuts import render 
+from django.http import HttpResponse
 from django.core.mail import send_mail
-from .models import Post, Department, Courses
+from .models import Post, Department, Subject
 from django.contrib import messages
 from .share import EmailPostForm
+
+
+def single_slug(request, single_slug):
+    departments = [d.department_slug for d in Department.objects.all()]
+    object_list = Post.published.all()
+    
+    if single_slug in departments:
+        matching_subjects = Subject.objects.filter(department_name__department_slug=single_slug)
+        
+        subject_urls = {}
+        for m in matching_subjects.all():
+            part_one = object_list.filter(subject_name__subject_name=m.subject_name).earliest('publish')
+            subject_urls[m] = part_one.slug #post slug
+        
+        return render(request, "blog/departments.html", {'subject_name': matching_subjects, "part_ones": subject_urls})
+
+
+    subjects = [s.subject_slug for s in Subject.objects.all()]
+    if single_slug in subjects:
+        return HttpResponse(f'{single_slug} is a subjects!')
+
+    return HttpResponse(f"'{single_slug}' is not registesred!'")
+    
+def departments(request):
+    departments = Department.objects.all()
+    return render(request, 'blog/department.html', {'departments': departments})
 
 
 def post_list(request):
@@ -44,15 +71,6 @@ def post_share(request, post_id):
                                                     'form': form,
                                                     'sent': sent})
 
-def department(request): 
-    """View for department page."""
-    dept = Department.objects.all()
-    return render(request, 'blog/department.html', {'department': dept})
-
-def course_list(request):
-    """View for list of courses"""
-    courses = Courses.objects.values_list('title', 'dept_id')
-    return render(request, 'blog/course_list.html', {'course': courses})
 
 
     

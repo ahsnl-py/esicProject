@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Department, Courses
+from .models import Post, Department, Subject
 
 
 @admin.register(Post)
@@ -11,14 +11,11 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
 
-@admin.register(Department)
-class DeparmentAdmin(admin.ModelAdmin):
-    search_fields = ('name', 'dept_code')
-    ordering = ('dept_code', 'name')
+# Register your models here.
+"""Subject view in Admin"""
+admin.site.register(Subject)
 
+"""Subject view in Admin"""
+admin.site.register(Department)
 
-@admin.register(Courses)
-class CoursesAdmin(admin.ModelAdmin):
-    list_filter = ('dept',)
-    search_fields = ('title', 'sub_code', 'dept')
 

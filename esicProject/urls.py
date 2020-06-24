@@ -22,7 +22,5 @@ from blog import views as dept_views
 urlpatterns = [
     path('admin/', admin.site.urls),   
     path('register/', user_views.register, name='register'),
-    path('courses/', dept_views.course_list, name='course_list'),
-    path('department/', dept_views.department, name='deparment'),
     path('blog/', include('blog.urls', namespace='blog')),
 ]

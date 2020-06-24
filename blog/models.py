@@ -11,56 +11,35 @@ class Department(models.Model):
 
     Has many courses
     """
-
-    DEPARTMENT_CODE = (
-        ("TM", "12101"), # Technical Mathematics
-        ("PY", "12102"), # Physics 
-        ("LG", "12104"), # Languages 
-        ("ME", "12105"), # Mechanics, Biomechanics and Mechatronics
-        ("IC", "12110"), # Instrumentation and Control Engineering
-        ("FT", "12112"), # Fluid Dynamics and Thermodynamics
-        ("DM", "12113"), # Designing and Machine Components
-        ("EN", "12115"), # Energy Engineering
-        ("EE", "12116"), # Environmental Engineering
-        ("PE", "12118"), # Process Engineering
-        ("AU", "12120"), # Automotive, Combustion Engine and Railway Engineering 
-        ("AE", "12122"), # Aerospace Engineering
-        ("MT", "12132"), # Materials Engineering
-        ("MF", "12133"), # Manufacturing Technology
-        ("MP", "12134"), # Machining, Process Planning and Metrology
-        ("PM", "12135"), # Production Machines and Equipment
-        ("EM", "12138"), # Management and Economics
-    )
     # Deparment name.
-    name = models.CharField(max_length=225)
-    # Courses code tags related.
-    dept_code = models.CharField(max_length=5, choices=DEPARTMENT_CODE, default="TM")
+    department_name = models.CharField(max_length=225)
+    #department slug for urls
+    department_slug = models.CharField(max_length=100)
     # Department description. Optional
-    no_courses = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)], null=True)
+    no_subject = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)], null=True)
+    # dept_code. Optional
+    dept_code = models.IntegerField(null=True)
 
-
-    objects = models.Manager()
+    class Meta:
+        ordering = ('department_name',)
 
     def __str__(self):
-        return self.name 
+        return self.department_name 
 
-class Courses(models.Model):
+class Subject(models.Model):
     """Course model.
 
     Belong to a Department
     Has many post
     """
-    # Course title. Required
-    title = models.CharField(max_length=225)
-    # Courses code tags related.
-    sub_code = models.CharField(max_length=7)
-    # Post primary Key
-    dept = models.ForeignKey(Department, on_delete=models.CASCADE)
-    # Department choices
-    objects = models.Manager()
+    subject_name = models.CharField(max_length=250)
+    # slug subject for url
+    subject_slug = models.CharField(max_length=200)
+    # foreign key department 
+    department_name = models.ForeignKey(Department, on_delete=models.CASCADE, default=True)
 
     def __str__(self):
-        return self.title
+        return self.subject_name
 
 class PublishedManager(models.Manager): 
     def get_queryset(self): 
@@ -80,6 +59,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,  
                             unique_for_date='publish') 
+    subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE, default=1)
     author = models.ForeignKey(User, 
                                on_delete=models.CASCADE,
                                related_name='blog_posts') 
@@ -90,7 +70,6 @@ class Post(models.Model):
     status = models.CharField(max_length=10,  
                               choices=STATUS_CHOICES, 
                               default='draft') 
-    courses = models.ManyToManyField(Courses)
 
     objects = models.Manager()
     published = PublishedManager() 
