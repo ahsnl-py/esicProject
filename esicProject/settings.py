@@ -135,10 +135,11 @@ LOGIN_REDIRECT_URL = 'blog:post_list'
 LOGIN_URL = 'login'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ahsanul.nas@gmail.com'
-EMAIL_HOST_PASSWORD = 'RFFw4nSPvPrL9faN'
+EMAIL_HOST_USER = 'admin'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+<<<<<<< HEAD
 
 DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',
@@ -159,3 +160,5 @@ REST_FRAMEWORK = {
         # 'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 }
+=======
+>>>>>>> 8443bd7d6fd9ed848b31abd0b63e0392beac78d1
