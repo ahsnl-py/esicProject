@@ -25,22 +25,27 @@ SECRET_KEY = '&s9sv#%*@aw1q02))h#avy@6ib*)*wsja1gg@!37#7-82as!cq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+LOGIN_URL = '/login'
 
+MAX_POST_LENGTH = 240
+POST_ACTION_OPTIONS = ['like', 'unlike', 'repost']
 
 # Application definition
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
-    'users.apps.UsersConfig', 
-    'crispy_forms',
-    'taggit',
+    'users.apps.UsersConfig',
+    'forum.apps.ForumConfig', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'taggit',
+    'crispy_forms',
+    'rest_framework',   
 ]
 
 MIDDLEWARE = [
@@ -134,3 +139,20 @@ EMAIL_HOST_USER = 'ahsanul.nas@gmail.com'
 EMAIL_HOST_PASSWORD = 'RFFw4nSPvPrL9faN'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+DEFAULT_RENDERER_CLASSES = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+
+if DEBUG:
+    DEFAULT_RENDERER_CLASSES += [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+
+REST_FRAMEWORK = {
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
+    ],
+    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
+}
