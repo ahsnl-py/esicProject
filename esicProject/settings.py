@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 LOGIN_URL = '/login'
 
 MAX_POST_LENGTH = 240
-POST_ACTION_OPTIONS = ['like', 'unlike', 'repost']
+FORUM_ACTION_OPTIONS = ['like', 'unlike', 'repost']
 
 # Application definition
 
@@ -154,5 +154,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
     ],
-    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
 }

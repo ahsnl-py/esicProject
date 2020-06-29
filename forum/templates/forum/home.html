@@ -25,114 +25,164 @@
     </div>
 </div>
 <script>
-// loading forum list onto the page
-const forumContainerElement = document.getElementById("forums")
-
-function loadForum(forumElement) {
-    const xhr = new XMLHttpRequest() //
-    const method = 'GET'
-    const url = 'forums/' // localhost:/index
-    responseType = 'json'    
-    xhr.responseType = responseType
-    xhr.open(method, url)
-    xhr.onload = function() {
-        const serverResponse = xhr.response
-        var listedItems = serverResponse.response
-        var finalForumStr = ""
-        var i;
-        for (i=0; i<listedItems.length; i++) {
-            var forumObj = listedItems[i]
-            var currentItem = formatForumElement(forumObj)
-            finalForumStr += currentItem
+    
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
-    forumElement.innerHTML = finalForumStr
-}
-xhr.send() 
-}
 
-loadForum(forumContainerElement)
+    // handle forum errors
+    function handleForumFormError(msg, display){
+        var myErrorDiv = document.getElementById("forum-create-form-error")
+        if (display === true) {
+            // show error
+            myErrorDiv.setAttribute("class", "d-block alert alert-danger")
+            myErrorDiv.innerText = msg
+        } else {
+            // hide error
+            myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+        }
+    }   
 
-// handle forum errors
-function handleForumFormError(msg, display){
-    var myErrorDiv = document.getElementById("forum-create-form-error")
-    if (display === true) {
-        // show error
-        myErrorDiv.setAttribute("class", "d-block alert alert-danger")
-        myErrorDiv.innerText = msg
-    } else {
-        // hide error
-        myErrorDiv.setAttribute("class", "d-none alert alert-danger")
-    }
-}
-
-function handleForumCreateFormDidSumbit(event) {
-    event.preventDefault()
-    const myForm = event.target
-    const myFormData = new FormData(myForm)
-    const url = myForm.getAttribute("action")
-    const method = myForm.getAttribute("method")
-    const xhr = new XMLHttpRequest()
-    const responseType = "json"
-    xhr.responseType = responseType
-    xhr.open(method, url)
-    xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-    xhr.onload = function() {
-        if (xhr.status === 201) {
-            handleForumFormError("", false)
-            const newForumJson = xhr.response
-            const newForumElement = formatForumElement(newForumJson)
-            const ogHtml = forumContainerElement.innerHTML
-            forumContainerElement.innerHTML = newForumElement + ogHtml
-            myForm.reset()
-        } else if (xhr.status === 400) {
-            const errorJson = xhr.response
-            const contentError = errorJson.content
-            let contentErrorMsg;
-            if (contentError) {
-                contentErrorMsg = contentError[0]
-                if (contentErrorMsg) {
-                    handleForumFormError(contentErrorMsg, true)
+    function handleForumCreateFormDidSumbit(event) {
+        event.preventDefault()
+        const myForm = event.target
+        const myFormData = new FormData(myForm)
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+        const xhr = new XMLHttpRequest()
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.onload = function() {
+            if (xhr.status === 201) {
+                handleForumFormError("", false)
+                const newForumJson = xhr.response
+                const newForumElement = formatForumElement(newForumJson)
+                const ogHtml = forumContainerElement.innerHTML
+                forumContainerElement.innerHTML = newForumElement + ogHtml
+                myForm.reset()
+            } else if (xhr.status === 400) {
+                const errorJson = xhr.response
+                const contentError = errorJson.content
+                let contentErrorMsg;
+                if (contentError) {
+                    contentErrorMsg = contentError[0]
+                    if (contentErrorMsg) {
+                        handleForumFormError(contentErrorMsg, true)
+                    } else {
+                        alert("An error occured. Please try again.")
+                    }
                 } else {
                     alert("An error occured. Please try again.")
-                }
-            } else {
-                alert("An error occured. Please try again.")
-            }   
-        } else if (xhr.status === 401) {
-            alert("You must login!")
-            window.location.href = "/login"
+                }   
+            } else if (xhr.status === 401) {
+                alert("You must login!")
+                window.location.href = "/login"
+            } else if (xhr.status === 403) {
+                alert("You must login!")
+                window.location.href = "/login"
+            } else if (xhr.status === 500) {
+                alert("There was a server error, please try again.")
+            }
+            
         }
-        else if (xhr.status === 500) {
-            alert("There was a server error, please try again.")
+        xhr.onerror = function() {
+            alert("An error occurred. Please try again later.")
         }
-        
+        xhr.send(myFormData)
     }
-    xhr.onerror = function() {
-        alert("An error occurred. Please try again later.")
-    }
-    xhr.send(myFormData)
-}
-const forumCreateFormEl = document.getElementById("forum-create-form")
-forumCreateFormEl.addEventListener("submit", handleForumCreateFormDidSumbit)
+    const forumCreateFormEl = document.getElementById("forum-create-form")
+    forumCreateFormEl.addEventListener("submit", handleForumCreateFormDidSumbit)
 
-// compenets of forum list form 
-    function handleDidLike (forum_id, currentCount) {
+    // loading forum list onto the page
+    const forumContainerElement = document.getElementById("forums") 
+
+    function loadForum(forumElement) {
+        const xhr = new XMLHttpRequest() //
+        const method = 'GET'
+        const url = 'forums/' // localhost:/index
+        responseType = 'json'    
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function() {
+            const serverResponse = xhr.response
+            var listedItems = serverResponse
+            var finalForumStr = ""
+            var i;
+            for (i=0;i<listedItems.length; i++) {
+                var forumObj = listedItems[i]
+                var currentItem = formatForumElement(forumObj)
+                finalForumStr += currentItem
+            }
+            forumElement.innerHTML = finalForumStr
+        }
+        xhr.send() 
+    }
+
+    loadForum(forumContainerElement)
+
+    function handleForumActionBtn(forum_id, currentCount, action) {
         console.log(forum_id, currentCount)
+        const url = "api/forum/action/"
+        const method="POST"
+        const data = JSON.stringify({
+            id: forum_id,
+            action: action
+        })
+        const xhr = new XMLHttpRequest()
+        const csrftoken = getCookie('csrftoken');
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function() {
+            // react.js this handle the state much better
+            loadForum(forumContainerElement)
+        }
+        xhr.send(data)
         return 
     }
 
+    function ReForumBtn(forum) {
+    return "<button class='btn btn-outline-success btn-sm' onclick=handleForumActionBtn(" + 
+    forum.id + "," + forum.likes + ",'reforum')>Reforum</button>"
+    }
+
+
+    function UnLikeBtn(forum) {
+        return "<button class='btn btn-outline-primary btn-sm' onclick=handleForumActionBtn(" + 
+        forum.id + "," + forum.likes + ",'unlike')>Unlike</button>"
+    }
+
     function LikeBtn(forum) {
-        return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + 
-        forum.id + "," + forum.likes + ")>" + forum.likes + " Likes</button>"
+        return "<button class='btn btn-primary btn-sm' onclick=handleForumActionBtn(" + 
+        forum.id + "," + forum.likes + ",'like')>" + forum.likes + " Likes</button>"
     }
 
     function formatForumElement(forum) {
-        var formattedforum = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 forum' id='forum-" + forum.id 
+        var formattedForum = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 forum' id='forum-" + forum.id 
         + "'><p>" + forum.content + 
-            "</p><div class='btn-group'>" + LikeBtn(forum) +
-            "</div></div>"
-        return formattedforum
+        "</p><div class='btn-group'>" + 
+            LikeBtn(forum) +
+                UnLikeBtn(forum) + 
+            ReForumBtn(forum) +
+        "</div></div>"
+    return formattedForum
     }
  
 </script>
