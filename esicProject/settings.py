@@ -28,15 +28,15 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 LOGIN_URL = '/login'
 
-MAX_POST_LENGTH = 240
-FORUM_ACTION_OPTIONS = ['like', 'unlike', 'repost']
+#MAX_POST_LENGTH = 240
+#FORUM_ACTION_OPTIONS = ['like', 'unlike', 'repost']
 
 # Application definition
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
-    'forum.apps.ForumConfig', 
+    'onlineforum.apps.OnlineforumConfig', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'taggit',
     'crispy_forms',
-    'rest_framework',   
+    #'rest_framework',   
 ]
 
 MIDDLEWARE = [
