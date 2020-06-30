@@ -18,7 +18,7 @@ urlpatterns = [
     path('home/forum/<int:forum_id>', forum_views.forum_detail_view),
     #path('home/api/forum/action/', forum_views.forum_action_view),
     #path('home/api/forum/<int:forum_id>/delete', forum_views.forum_delete_view),
-    path('home/api/forum/', include('onlineforum.urls')),
+    path('api/forums/', include('onlineforum.urls')),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
     path('login', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),

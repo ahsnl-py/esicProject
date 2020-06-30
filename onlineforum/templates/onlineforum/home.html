@@ -118,7 +118,7 @@ function loadForum(forumElement) {
     const xhr = new XMLHttpRequest() //
     const method = 'GET'
     const url = 'forums/' // localhost:/index
-    responseType = 'json'    
+    const responseType = 'json'    
     xhr.responseType = responseType
     xhr.open(method, url)
     xhr.onload = function() {
