@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 LOGIN_URL = '/login'
 
 MAX_POST_LENGTH = 240
-#FORUM_ACTION_OPTIONS = ['like', 'unlike', 'repost']
+FORUM_ACTION_OPTIONS = ['like', 'unlike', 'repost']
 
 # Application definition
 

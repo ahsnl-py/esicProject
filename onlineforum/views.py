@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from .models import ChatForum
 from .forms import ForumForm
-from .serializers import ChatForumSerializer
+from .serializers import ChatForumSerializer, ChatForumActionSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
@@ -58,7 +58,38 @@ def forum_delete_view(request, forum_id, *args, **kwargs):
     return Response({"message": "forum removed"}, status=200)
 
 
-
+"""
+Action View
+Action options : [like, unlike, repost]
+"""
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def forum_action_view(request, *args, **kwargs):
+    serializer = ChatForumActionSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        forum_id = data.get("id")
+        action = data.get("action")
+        content = data.get("content")
+        qs = ChatForum.objects.filter(id=forum_id)
+        if not qs.exists():
+            return Response({}, status=404)
+        obj = qs.first()
+        if action == "like":
+            obj.likes.add(request.user)
+            serializer = ChatForumSerializer(obj)
+            return Response(serializer.data, status=200)
+        elif action == "unlike":
+            obj.likes.remove(request.user)
+        elif action == "repost":
+            new_forum = ChatForum.objects.create(
+                    user=request.user, 
+                    parent=obj,
+                    content=content,
+                    )
+            serializer = ChatForumSerializer(new_forum)
+            return Response(serializer.data, status=200)
+    return  Response({"message": "Tweet removed"}, status=200)
 
 ####
 
