@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from .models import ChatForum
 from .forms import ForumForm
-from .serializers import ChatForumSerializer, ChatForumActionSerializer
+from .serializers import ChatForumSerializer, ChatForumActionSerializer, ChatForumCreateSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
@@ -38,7 +38,7 @@ def forum_detail_view(request, forum_id, *args, **kwargs):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated]) # REST API course
 def forum_create_view(request, *args, **kwargs):
-    serializer = ChatForumSerializer(data=request.POST or None )
+    serializer = ChatForumCreateSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data, status=201)

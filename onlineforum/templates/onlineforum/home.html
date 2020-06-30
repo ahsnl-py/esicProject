@@ -138,7 +138,7 @@ function loadForum(forumElement) {
 }
 loadForum(forumContainerElement)
 
-function handleDidLike(forum_id, currentCount, action) {
+function handleForumActionBtn(forum_id, currentCount, action) {
     console.log(forum_id, currentCount, action)
     const url = "api/forum/action/"
     const method="POST"
@@ -162,17 +162,17 @@ function handleDidLike(forum_id, currentCount, action) {
 }
 
 function ReForumBtn(forum) {
-    return "<button class='btn btn-outline-success btn-sm' onclick=handleDidLike(" + 
+    return "<button class='btn btn-outline-success btn-sm' onclick=handleForumActionBtn(" + 
     forum.id + "," + forum.likes + ",'repost')>Reforum</button>"
     }
 
 function UnLikeBtn(forum) {
-        return "<button class='btn btn-outline-primary btn-sm' onclick=handleDidLike(" + 
+        return "<button class='btn btn-outline-primary btn-sm' onclick=handleForumActionBtn(" + 
         forum.id + "," + forum.likes + ",'unlike')>Unlike</button>"
     }
 
 function LikeBtn(forum) {
-    return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + 
+    return "<button class='btn btn-primary btn-sm' onclick=handleForumActionBtn(" + 
     forum.id + "," + forum.likes + ",'like')>" + forum.likes + " Likes</button>"
 }
 
