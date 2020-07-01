@@ -38,7 +38,7 @@ def forum_detail_view(request, forum_id, *args, **kwargs):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated]) # REST API course
 def forum_create_view(request, *args, **kwargs):
-    serializer = ChatForumCreateSerializer(data=request.POST)
+    serializer = ChatForumCreateSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data, status=201)
