@@ -18,7 +18,7 @@ urlpatterns = [
     path('home/forums/', forum_views.forum_list_view),
     path('home/forum-create/', forum_views.forum_create_view),
     path('home/forum/<int:forum_id>', forum_views.forum_detail_view),
-    path('react/', TemplateView.as_view(template_name='blog/react.html')),
+    path('react/', TemplateView.as_view(template_name='onlineforum/react_via_dj.html')),
     #path('home/api/forum/action/', forum_views.forum_action_view),
     #path('home/api/forum/<int:forum_id>/delete', forum_views.forum_delete_view),
     path('api/forums/', include('onlineforum.urls')),

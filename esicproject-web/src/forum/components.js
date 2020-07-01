@@ -35,6 +35,7 @@ export function ForumComponent(props) {
 export function ForumList(props) {
     const [forumsInit, setForumInit] = useState([])
     const [forum, setForum] = useState([])
+    const [forumDidSet, setFourmDidSet] = useState(false)
     useEffect(()=>{
       const final = [...props.newForum].concat(forumsInit)
       if (final.length !== forum.length) {
@@ -44,15 +45,18 @@ export function ForumList(props) {
     }, [props.newForum, forum, forumsInit])
 
     useEffect(() => {
-      const myCallback = (response, status) => {
-        if (status === 200){
-          setForumInit(response)
-        } else {
-          alert("There was an error")
+      if (forumDidSet === false) {
+        const myCallback = (response, status) => {
+          if (status === 200){
+            setForumInit(response)
+            setForumInit(true)
+          } else {
+            alert("There was an error")
+          }
         }
-      }
-      loadForum(myCallback)
-    }, [])
+        loadForum(myCallback)
+      } 
+    }, [setForumInit, forumDidSet, setFourmDidSet])
     return forum.map((item, index)=>{
       return <Forum forum={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
     })
