@@ -15,7 +15,7 @@ from .serializers import ChatForumSerializer, ChatForumActionSerializer, ChatFor
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
 def home_view(request, *args, **kwargs):
-    return render(request, "onlineforum/home.html", context={}, status=200)
+    return render(request, "blog/home.html", context={}, status=200)
 
 """List View"""
 @api_view(['GET'])

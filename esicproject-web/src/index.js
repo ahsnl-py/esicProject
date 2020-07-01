@@ -7,14 +7,12 @@ import * as serviceWorker from './serviceWorker';
 
 const appEl = document.getElementById('root')
 if (appEl) {
-  ReactDOM.render(<App />, appEl)
+    ReactDOM.render(<App />, appEl);
 }
-
-const forumEl = document.getElementById('forum-el')
-if (forumEl) {
-  ReactDOM.render(<ForumComponent />, forumEl)
+const forumEL = document.getElementById("forum-el")
+if (forumEL) {
+    ReactDOM.render(<ForumComponent />, forumEL);
 }
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
