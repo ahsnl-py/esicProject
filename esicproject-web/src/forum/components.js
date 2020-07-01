@@ -6,18 +6,21 @@ import {loadForum, createForum} from '../lookup'
 export function ForumComponent(props) {
   const textAreaRef = React.createRef()
   const [newForum, setNewForum] = useState([])
+
+  const handleBackendUpdate = (response, status) => {
+    let tempNewForum = [...newForum]
+    if (status === 201) {
+      tempNewForum.unshift(response)
+      setNewForum(tempNewForum)
+    } else {
+      alert("There was an error, please try again")
+    }
+  }
   const handleSubmit = (event) => {
     event.preventDefault()
     const newVal = textAreaRef.current.value
-    let tempNewForum = [...newForum]
-    createForum(newVal, (response, status) => {
-      if (status === 201) {
-        tempNewForum.unshift(response)
-      } else {
-        alert("There was an error, please try again")
-      }
-    })
-    setNewForum(tempNewForum)
+    // backend api request
+    createForum(newVal, handleBackendUpdate)
     textAreaRef.current.value = ''
   }
   return <div className={props.className}>
