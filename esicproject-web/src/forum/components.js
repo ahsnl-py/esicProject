@@ -2,12 +2,20 @@ import React, {useEffect, useState} from 'react';
 
 import {loadForum} from '../lookup'
 
+//parent components
 export function ForumComponent(props) {
   const textAreaRef = React.createRef()
+  const [newForum, setNewForum] = useState([])
   const handleSubmit = (event) => {
     event.preventDefault()
     const newVal = textAreaRef.current.value
-    console.log(newVal)
+    let tempNewForum = [...newForum]
+    tempNewForum.unshift({
+      content: newVal,
+      likes: 0,
+      id: 1234
+    })
+    setNewForum(tempNewForum)
     textAreaRef.current.value = ''
   }
   return <div className={props.className}>
@@ -19,25 +27,33 @@ export function ForumComponent(props) {
         <button type='submit' className='btn btn-primary my-3'>Share</button>
       </form>
       </div>
-    <ForumList />
+    <ForumList newForum={newForum} />
   </div>
 }
 
-
+// child components 
 export function ForumList(props) {
-    const [forums, setForum] = useState([])
-   
+    const [forumsInit, setForumInit] = useState([])
+    const [forum, setForum] = useState([])
+    useEffect(()=>{
+      const final = [...props.newForum].concat(forumsInit)
+      if (final.length !== forum.length) {
+        setForum(final)
+        console.log(final)
+      }
+    }, [props.newForum, forum, forumsInit])
+
     useEffect(() => {
       const myCallback = (response, status) => {
         if (status === 200){
-          setForum(response)
+          setForumInit(response)
         } else {
           alert("There was an error")
         }
       }
       loadForum(myCallback)
     }, [])
-    return forums.map((item, index)=>{
+    return forum.map((item, index)=>{
       return <Forum forum={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
     })
   }
