@@ -1,9 +1,11 @@
 """esicProject URL MAIN Configuration"""
 
-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 from users import views as user_views
 from blog import views as dept_views
@@ -16,6 +18,7 @@ urlpatterns = [
     path('home/forums/', forum_views.forum_list_view),
     path('home/forum-create/', forum_views.forum_create_view),
     path('home/forum/<int:forum_id>', forum_views.forum_detail_view),
+    path('react/', TemplateView.as_view(template_name='blog/react.html')),
     #path('home/api/forum/action/', forum_views.forum_action_view),
     #path('home/api/forum/<int:forum_id>/delete', forum_views.forum_delete_view),
     path('api/forums/', include('onlineforum.urls')),
@@ -25,3 +28,7 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('blog.urls', namespace='blog')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL,
+                        document_root=settings.STATIC_URL)
