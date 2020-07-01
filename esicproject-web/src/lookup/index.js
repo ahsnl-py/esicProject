@@ -1,5 +1,6 @@
-import {loadForum} from './components'
+import {loadForum, createForum} from './components'
 
 export {
-    loadForum
+    loadForum,
+    createForum
 }

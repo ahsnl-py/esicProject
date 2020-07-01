@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'; 
 
-import {loadForum} from '../lookup'
+import {loadForum, createForum} from '../lookup'
 
 //parent components
 export function ForumComponent(props) {
@@ -10,10 +10,12 @@ export function ForumComponent(props) {
     event.preventDefault()
     const newVal = textAreaRef.current.value
     let tempNewForum = [...newForum]
-    tempNewForum.unshift({
-      content: newVal,
-      likes: 0,
-      id: 1234
+    createForum(newVal, (response, status) => {
+      if (status === 201) {
+        tempNewForum.unshift(response)
+      } else {
+        alert("There was an error, please try again")
+      }
     })
     setNewForum(tempNewForum)
     textAreaRef.current.value = ''
@@ -33,34 +35,33 @@ export function ForumComponent(props) {
 
 // child components 
 export function ForumList(props) {
-    const [forumsInit, setForumInit] = useState([])
-    const [forum, setForum] = useState([])
-    const [forumDidSet, setFourmDidSet] = useState(false)
-    useEffect(()=>{
-      const final = [...props.newForum].concat(forumsInit)
-      if (final.length !== forum.length) {
-        setForum(final)
-        console.log(final)
-      }
-    }, [props.newForum, forum, forumsInit])
+  const [forumInit, setForumInit] = useState([])
+  const [forum, setForum] = useState([])
+  const [forumDidSet, setForumDidSet] = useState(false)
+  useEffect(()=>{
+    const final = [...props.newForum].concat(forumInit)
+    if (final.length !== forum.length) {
+      setForum(final)
+    }
+  }, [props.newForum, forum, forumInit])
 
-    useEffect(() => {
-      if (forumDidSet === false) {
-        const myCallback = (response, status) => {
-          if (status === 200){
-            setForumInit(response)
-            setForumInit(true)
-          } else {
-            alert("There was an error")
-          }
+  useEffect(() => {
+    if (forumDidSet === false){
+      const myCallback = (response, status) => {
+        if (status === 200){
+          setForumInit(response)
+          setForumDidSet(true)
+        } else {
+          alert("There was an error")
         }
-        loadForum(myCallback)
-      } 
-    }, [setForumInit, forumDidSet, setFourmDidSet])
-    return forum.map((item, index)=>{
-      return <Forum forum={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
-    })
-  }
+      }
+      loadForum(myCallback)
+    }
+  }, [forumInit, forumDidSet, setForumDidSet])
+  return forum.map((item, index)=>{
+    return <Forum forum={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
+  })
+}
 
 export function ActionBtn(props) {
     const {forum, action} = props
@@ -95,3 +96,10 @@ export function Forum(props) {
         </div>
     </div>
   }
+
+
+
+
+
+
+  
