@@ -1,6 +1,5 @@
-import {createForum ,loadForum} from './components'
+import {backendLookup} from './components'
 
 export {
-    createForum,
-    loadForum
+    backendLookup
 }
