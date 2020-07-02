@@ -65,6 +65,7 @@ Action options : [like, unlike, repost]
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def forum_action_view(request, *args, **kwargs):
+    print(request.data)
     serializer = ChatForumActionSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data

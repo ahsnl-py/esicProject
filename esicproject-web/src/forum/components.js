@@ -96,7 +96,7 @@ export function ParentForum(props){
   return forum.parent ? <div className='row'>
   <div className='col-11 mx-auto p-3 border rounded'>
     <p className='mb-0 text-muted small'>Repost</p>
-    <forum className={' '} forum={forum.parent} />
+    <Forum className={' '} forum={forum.parent} />
   </div>
   </div> : null
 }
