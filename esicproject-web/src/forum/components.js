@@ -10,6 +10,7 @@ export function ForumComponent(props) {
   const textAreaRef = React.createRef()
   const [newForum, setNewForum] = useState([])
 
+  const canPost = props.canPost === "false" ? false : true
   const handleBackendUpdate = (response, status) => {
     let tempNewForum = [...newForum]
     if (status === 201) {
@@ -27,15 +28,16 @@ export function ForumComponent(props) {
     textAreaRef.current.value = ''
   }
   return <div className={props.className}>
-    <div className='col-12 mb-3'>
-      <form onSubmit={handleSubmit}>
-        <textarea ref={textAreaRef} required={true} className='form-control' name='forum'>
+          {canPost === true && <div className='col-12 mb-3'>
+            <form onSubmit={handleSubmit}>
+              <textarea ref={textAreaRef} required={true} className='form-control' name='forum'>
 
-        </textarea>
-        <button type='submit' className='btn btn-primary my-3'>Share</button>
-      </form>
-      </div>
-    <ForumList newForum={newForum} />
+              </textarea>
+              <button type='submit' className='btn btn-primary my-3'>Share</button>
+            </form>
+            </div>
+}
+    <ForumList newForum={newForum} {...props}/>
   </div>
 }
 
@@ -61,9 +63,9 @@ export function ForumList(props) {
           alert("There was an error")
         }
       }
-      apiForumList(handleForumListLookup)
+      apiForumList(props.username, handleForumListLookup)
     }
-  }, [forumInit, forumDidSet, setForumDidSet])
+  }, [forumInit, forumDidSet, setForumDidSet, props.username])
 
 
   const handleDidRepost = (newForum) => {
