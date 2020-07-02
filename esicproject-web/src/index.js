@@ -9,9 +9,12 @@ const appEl = document.getElementById('root')
 if (appEl) {
     ReactDOM.render(<App />, appEl);
 }
-const forumEL = document.getElementById("forum-el")
-if (forumEL) {
-    ReactDOM.render(<ForumComponent />, forumEL);
+const e = React.createElement
+const forumEl = document.getElementById("forum-el")
+if (forumEl) {
+    console.log(forumEl.dataset)
+    ReactDOM.render(
+        e(ForumComponent, forumEl.dataset), forumEl);
 }
 
 // If you want your app to work offline and load faster, you can change

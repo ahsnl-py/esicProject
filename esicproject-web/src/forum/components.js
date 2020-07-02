@@ -64,23 +64,38 @@ export function ForumList(props) {
       apiForumList(handleForumListLookup)
     }
   }, [forumInit, forumDidSet, setForumDidSet])
+
+
+  const handleDidRepost = (newForum) => {
+    const updateForumInit = [...forumInit]
+    updateForumInit.unshift(newForum)
+    setForumInit(updateForumInit)
+    const updateFinalForum = [...forum]
+    updateFinalForum.unshift(forum)
+    setForum(updateFinalForum)
+  }
+
   return forum.map((item, index)=>{
-    return <Forum forum={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
+    return <Forum 
+    forum={item} 
+    didRepost = {handleDidRepost}
+    className='my-5 py-5 border bg-white text-dark' 
+    key={`${index}-{item.id}`} />
+    
   })
 }
 
 export function ActionBtn(props) {
-    const {forum, action} = props
-    const [likes, setLikes] = useState(forum.likes ? forum.likes : 0)
+    const {forum, action, didPerformAction} = props
+    const likes = forum.likes ? forum.likes : 0
     const className = props.className ? props.className : 'btn btn-primary btn-sm'
     const actionDisplay = action.display ? action.display : 'Action'
     
     const handleActionBackendEvent = (response, status) => {
       console.log(response, status)
-      if (status === 200) {
-        setLikes(response.likes)
-        // setUserLike(true)
-      }
+      if ((status === 200 || status === 201) && didPerformAction ) {
+        didPerformAction(response, status)
+      } 
     }
 
     const handleClick = (event) => {
@@ -96,27 +111,42 @@ export function ParentForum(props){
   return forum.parent ? <div className='row'>
   <div className='col-11 mx-auto p-3 border rounded'>
     <p className='mb-0 text-muted small'>Repost</p>
-    <Forum className={' '} forum={forum.parent} />
+    <Forum hideAction className={' '} forum={forum.parent} />
   </div>
   </div> : null
 }
 
 // make some change here .. continue from series 70
 export function Forum(props) {
-    const {forum} = props
+    const {forum, didRepost} = props
+    const [actionForum, setActionForum, hideAction] = useState(props.forum ? props.forum : null)
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     
+    const handlePerformAction = (newActionForum, status ) => {
+      if (status === 2000) {
+        setActionForum(newActionForum)
+      } else if (status === 201 ) {
+        if (didRepost) {
+          didRepost(newActionForum)
+        }
+        //let the list know
+      }
+
+      //set action forum
+    }
+
 //continue here...
     return <div className={className}>
             <div>
               <p>{forum.id} - {forum.content}</p>
               <ParentForum forum={forum} />
             </div>
-        <div className='btn btn-group'>
-          <ActionBtn forum={forum} action={{type: "like", display:"Likes"}}/>
-          <ActionBtn forum={forum} action={{type: "unlike", display:"Unlike"}}/>
-          <ActionBtn forum={forum} action={{type: "repost", display:"Repost"}}/>
+        {(actionForum && hideAction !== true ) && <div className='btn btn-group'>
+          <ActionBtn forum={actionForum} didPerformAction={handlePerformAction} action={{type: "like", display:"Likes"}}/>
+          <ActionBtn forum={actionForum} didPerformAction={handlePerformAction} action={{type: "unlike", display:"Unlike"}}/>
+          <ActionBtn forum={actionForum} didPerformAction={handlePerformAction} action={{type: "repost", display:"Repost"}}/>
         </div>
+}
     </div>
     }
 
