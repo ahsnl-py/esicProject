@@ -29,8 +29,8 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div class='forum-el-detail' data-forum-id="10" data-class-name='col-6-mx-auto'></div>
-    <div id="forum-el" class='d-none' data-username='ahsnl-py2'  data-can-post="false"></div>
+    <div id='forum-container'></div>
+    <div id="forum-el"  data-username='ahsnl-py1'  data-can-post="false"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -41,5 +41,18 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      var path = window.location.pathname
+      var idRegex = /(?<forumid>\d+)/
+      var match = path.match(idRegex)
+      if (match) {
+        var forumId = match.groups.forumid
+        var forumMainEl = document.getElementById("forum-el")
+        forumMainEl.className = "d-none"
+        var forumEl = "<div class='forum-el-detail' data-forum-id=" + forumId + " data-class-name='col-6 mx-auto'></div>" 
+        var mainContainer = document.getElementById("forum-container")
+        mainContainer.innerHTML = forumEl
+      }
+    </script>
   </body>
 </html>
