@@ -18,7 +18,9 @@ def home_view(request, *args, **kwargs):
     username = None
     if request.user.is_authenticated:
         username = request.user.username
-    return render(request, "onlineforum/home.html", context={"username": username}, status=200)
+    return render(request, "onlineforum/home.html", 
+                        context={"username": username}, 
+                        status=200)
 
 def forums_list_view(request, *args, **kwargs):
     return render(request, "onlineforum/forum/list_forum.html")

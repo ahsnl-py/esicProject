@@ -19,3 +19,5 @@ urlpatterns = [
     path('<int:forum_id>/', forum_detail_view),
     path('<int:forum_id>/delete/', forum_delete_view),
 ]
+
+
