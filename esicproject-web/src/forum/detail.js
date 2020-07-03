@@ -15,14 +15,14 @@ export function ParentForum(props){
   
   // make some change here .. continue from series 70
 export function Forum(props) {
-    const {forum, didRepost} = props
-    const [actionForum, setActionForum, hideAction] = useState(props.forum ? props.forum : null)
+    const {forum, didRepost, hideAction} = props
+    const [actionForum, setActionForum] = useState(props.forum ? props.forum : null)
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     const path = window.location.pathname
     const match = path.match(/(?<forumid>\d+)/)
     const urlForumId = match ? match.groups.forumid : -1
-
     const isDetail = `${forum.id}` === `${urlForumId}` 
+
     const handleLink = (event) => {
       event.preventDefault()
       window.location.href = `/${forum.id}`
