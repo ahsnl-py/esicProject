@@ -23,6 +23,3 @@ def forums_list_view(request, *args, **kwargs):
 
 def forums_detail_view(request, forum_id, *args, **kwargs):
     return render(request, "onlineforum/forum/detail_forum.html", context={"forum_id": forum_id})
-
-def forums_profile_view(request, username, *args, **kwargs):
-    return render(request, "onlineforum/forum/profile.html", context={"profile_username": username})
