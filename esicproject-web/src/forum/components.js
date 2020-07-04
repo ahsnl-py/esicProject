@@ -12,7 +12,7 @@ export function ForumComponent(props) {
   const canPost = props.canPost === "false" ? false : true
   const handleNewForum = (newForum) =>{
     let tempNewForum = [...newForum]
-    tempNewForum.unshift(tempNewForum)
+    tempNewForum.unshift(newForum)
     setNewForum(tempNewForum)
   }
   return <div className={props.className}>
