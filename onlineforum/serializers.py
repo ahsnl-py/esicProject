@@ -2,6 +2,7 @@ from django.conf import settings
 from rest_framework import serializers
 
 from .models import ChatForum
+from users.serializers import PublicProfileSerializer
 
 MAX_POST_LENGTH = settings.MAX_POST_LENGTH
 FORUM_ACTION_OPTIONS = settings.FORUM_ACTION_OPTIONS
@@ -18,11 +19,12 @@ class ChatForumActionSerializer(serializers.Serializer):
         return value
 
 class ChatForumCreateSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source='user.profile', read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = ChatForum
-        fields = ['id', 'content', 'likes']
+        fields = ['user', 'id', 'content', 'likes']
     
     def get_likes(self, obj):
         return obj.likes.count()
@@ -31,16 +33,27 @@ class ChatForumCreateSerializer(serializers.ModelSerializer):
         if len(value) > MAX_POST_LENGTH:
             raise serializers.ValidationError("This forum is too long")
         return value
+    
 
 
 class ChatForumSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source='user.profile', read_only=True)
+    #user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     parent = ChatForumCreateSerializer(read_only=True)
 
     class Meta:
         model = ChatForum
-        fields = ['id', 'content', 'likes', 'is_repost','parent']
+        fields = ['user', 
+                    'id', 
+                    'content', 
+                    'likes', 
+                    'is_repost',
+                    'parent', 
+                    'timestamp']
 
     def get_likes(self, obj):
         return obj.likes.count()
         
+    def get_user(self, obj):
+        return obj.user.id
