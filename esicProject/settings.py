@@ -161,9 +161,7 @@ if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
-"""    DEFAULT_AUTHENTICATION_CLASSES += [
-        'esicProject.rest_api.dev.DevAuthentication'
-    ]"""
+
     
 REST_FRAMEWORK = {
     
