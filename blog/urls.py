@@ -2,17 +2,20 @@ from django.urls import path
 
 from users import views as user_views
 from .import views
-from .views import PostCreateView, PostDetailView, PostUpdateView, PostDeleteView
+from .views import (
+    PostCreateView, 
+    PostDetailView, 
+    PostUpdateView, 
+    PostDeleteView,
+    UserPostListView
+)
 
 app_name = 'blog'
 urlpatterns = [
-    # blog/department
     path('', views.departments, name='departments'),
-    # blog/<single_slug>
     path('<single_slug>', views.single_slug, name='single_slug'),
-    # /post_list views
-    path('post_list/', views.post_list, name='post_list'),
-    #path('', views.PostListView.as_view(), name='post_list'),
+    path('allpost/', views.post_list, name='post_list'),
+    path('user/<str:username>', UserPostListView.as_view(), name='user_view'),
     path('post/new/', PostCreateView.as_view(), name='post_create'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/update', PostUpdateView.as_view(), name='post_update'),

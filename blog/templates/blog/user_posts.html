@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<legend class="border-bottom mb-4">
+  All files share by {{ view.kwargs.username }}</legend>
+    {% for post in posts %}
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{% url 'blog:user_view'  post.author.username %}">{{ post.author }}</a>
+          <small class="text-muted">{{ post.publish|date:"F d, Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h2>
+        <p class='tags'>Tags: {{ post.tags.all|join:", " }} </p>
+        <p class="article-content">{{ post.body|truncatewords:30|linebreaks }}</p>
+      </div>
+    </article>
+    {% endfor %}
+{% endblock content %}

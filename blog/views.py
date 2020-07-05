@@ -1,14 +1,22 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.views.generic import (
+    CreateView, 
+    DetailView, 
+    UpdateView, 
+    DeleteView,
+    ListView
+)
 
 
 from .share import EmailPostForm
 from .models import Post, Department, Subject
+
 
 def single_slug(request, single_slug):
     departments = [d.department_slug for d in Department.objects.all()]
@@ -77,19 +85,15 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-def post_list(request):
-    object_list = Post.published.all()
-    paginator = Paginator(object_list, 3)
-    page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        # if page is not an integer deliver the first page
-        posts = paginator.page(1)
-    except EmptyPage:
-        # if page is out of range deliver last page of results
-        posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/post/list.html', {'page': page, 'posts': posts})
+class UserPostListView(ListView):
+    model = Post
+    template_name = 'blog/user_posts.html'
+    context_object_name = 'posts'
+    ordering = ['-publish']
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.published.filter(author=user).order_by('-publish')
 
 
 def post_share(request, post_id):
@@ -116,7 +120,23 @@ def post_share(request, post_id):
                                                     'sent': sent})
 
 
-def post_detail_get_abs(request, year, month, day, post):
+def post_list(request):
+    object_list = Post.published.all()
+    paginator = Paginator(object_list, 3)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # if page is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # if page is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/post/list.html', {'page_obj': page, 'posts': posts})
+
+
+
+def post_detail_old(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post,
                                    status='published',
                                    publish__year=year,
