@@ -29,7 +29,7 @@ export function ForumDetailComponent(props){
 
   const handleBackendLookup = (response, status) => {
     if (status === 200) {
-      setForum(response)
+      setForum(response.results)
     } else {
       alert("There was an error finding your forum.")
     }

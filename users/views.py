@@ -5,7 +5,11 @@ from django.contrib import messages
 
 
 from .models import Profile
-from .forms import UserRegisterForm, ProfileForm
+from .forms import (
+    UserRegisterForm, 
+    ProfileUpdateForm, 
+    UserUpdateForm
+)
 
 
 def register(request):
@@ -20,7 +24,33 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-def profile(request, username):
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, 
+                                        instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid:
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Account has been updated!')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'users/profile.html', context)
+
+
+
+
+
+"""User Profile form ReactJS"""
+def profile_forum(request, username):
     qs = Profile.objects.filter(user__username=username)
     if not qs.exists():
         raise Http404
@@ -31,7 +61,6 @@ def profile(request, username):
     }
     return render(request, 'users/profile.html', context)
 
-
 def profile_update_view(request):
     if not request.user.is_authenticated: # is_authenticated()
         return redirect("/login?next=/profile/update")
@@ -39,7 +68,7 @@ def profile_update_view(request):
     user = request.user
     my_profile = request.user.profile
     if request.method == 'POST':
-        form = ProfileForm(request.POST or None, instance=my_profile)
+        form = ProfileUpdateForm(request.POST or None, instance=my_profile)
         if form.is_valid():
             profile_obj = form.save(commit=False)
             first_name = form.cleaned_data.get('first_name')
@@ -51,7 +80,7 @@ def profile_update_view(request):
             messages.success(request, f'Account has been edit!')
             return redirect('home')
     else:
-        form = ProfileForm()
+        form = ProfileUpdateForm()
 
     context = {
         "form": form,

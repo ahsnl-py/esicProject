@@ -1,11 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import CreateView, DetailView
 from django.shortcuts import render, get_object_or_404 
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.mail import send_mail
-from .models import Post, Department, Subject
 from django.contrib import messages
-from .share import EmailPostForm
 
+
+from .share import EmailPostForm
+from .models import Post, Department, Subject
 
 def single_slug(request, single_slug):
     departments = [d.department_slug for d in Department.objects.all()]
@@ -39,11 +41,25 @@ def departments(request):
     return render(request, 'blog/department.html', {'departments': departments})
 
 
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'subject_name', 'body', 'status']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+
 def post_list(request):
     posts = Post.published.all()
     return render(request, 'blog/post/list.html', {'posts': posts})
 
-def post_detail(request, year, month, day, post):
+
+class PostDetailView(DetailView):
+    model = Post
+
+def post_detail_get_abs(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post,
                                    status='published',
                                    publish__year=year,
@@ -52,6 +68,7 @@ def post_detail(request, year, month, day, post):
     return render(request,
                   'blog/post/detail.html',
                   {'post': post})
+
 
 
 def post_share(request, post_id):

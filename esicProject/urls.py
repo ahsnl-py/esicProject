@@ -19,8 +19,8 @@ urlpatterns = [
     path('<int:forum_id>', forum_views.forums_detail_view),
     path('api/forums/', include('onlineforum.api.urls')),
     path('register/', user_views.register, name='register'),
-   # path('profile/', user_views.profile, name='profile'),
-    re_path(r'profiles?/', include('users.urls'), name='profile'),
+    path('profile/', user_views.profile, name='profile'),
+    #re_path(r'profiles?/', include('users.urls'), name='profile'),
     path('login', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('blog.urls', namespace='blog')),
@@ -29,3 +29,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                         document_root=settings.STATIC_URL)
+    urlpatterns += static(settings.MEDIA_URL, 
+                        document_root=settings.MEDIA_ROOT)
