@@ -15,7 +15,12 @@ from django.views.generic import (
 
 
 from .share import EmailPostForm
-from .models import Post, Department, Subject
+from .models import (
+    Post, 
+    Department, 
+    Subject,
+    PostImage
+)
 
 
 def single_slug(request, single_slug):
@@ -52,15 +57,15 @@ def departments(request):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'subject_name', 'body', 'status']
+    fields = ['title', 'subject_name', 'body', 'image', 'status']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.instance.author = self.request.user 
         return super().form_valid(form)
 
 class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'subject_name', 'body', 'status']
+    fields = ['title', 'subject_name', 'body', 'image', 'status']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -74,6 +79,7 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
 
 class PostDetailView(DetailView):
     model = Post
+
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post

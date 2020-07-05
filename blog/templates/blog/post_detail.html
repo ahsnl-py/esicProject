@@ -11,6 +11,11 @@
       </small> 
     </div>
     {{ post.body|linebreaks }} 
+
+      {% if post.image  %}
+      <img src="{{ post.image.url }}" class="img-fluid" alt="Responsive image">
+      {% endif %}
+
     <p>
       {% if post.author == user %}
         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'blog:post_update' object.id %}">Update</a>

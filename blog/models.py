@@ -70,6 +70,7 @@ class Post(models.Model):
     status = models.CharField(max_length=10,  
                               choices=STATUS_CHOICES, 
                               default='draft') 
+    image = models.FileField(null=True, blank=True)
 
     objects = models.Manager()
     published = PublishedManager() 
@@ -86,6 +87,10 @@ class Post(models.Model):
         return reverse('blog:post_detail', kwargs={'pk': self.pk})
 
 
+class PostImage(models.Model):
+    post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
 
-
+    def __str__(self):
+        return self.post.title
 
