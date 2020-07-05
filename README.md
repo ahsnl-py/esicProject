@@ -5,7 +5,6 @@ MSIC is an abbreviate of Mechanics Student In Czech. Our aim is simple. To share
 ## Want to help? follow instructions below..
 Requires Python 3.5 or higher, recommended to run in a virtual environment (virtualenv, consider using virtualenvwrapper to manage your virtual environments).
 
-## Django 
 ### Installing virtual env 
 ```
 pip install virtualenv
@@ -42,6 +41,7 @@ Build the front-end
 ```
 (my_env) /esicProject/esicproject-web$ npm start
 ```
+* You should find the site running on `http://localhost:3000`
 
 ### comming soon
 This is a back-up file. Features are still under constructions. Coming soon...
