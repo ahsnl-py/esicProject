@@ -16,5 +16,8 @@
     </div>
   </article>
   {% endfor %}
+  <div class="float-right"">
+    {% include "blog/pagination.html" with page=posts %}
+  </div>
 {% endblock content %}
  
