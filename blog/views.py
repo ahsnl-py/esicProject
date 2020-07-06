@@ -1,10 +1,14 @@
+import os
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404 
+from django.shortcuts import render, get_object_or_404, redirect 
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.conf import settings
+from django.urls import path
 from django.views.generic import (
     CreateView, 
     DetailView, 
@@ -103,6 +107,24 @@ class UserPostListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.published.filter(author=user).order_by('-publish')
 
+def file_view(request):
+    #current_user = request.user_posts
+    post = Post.published.all()
+    files = PostFile.objects.all() 
+    context = {
+        'post': post,
+        'files': files
+    }
+    return render(request, 'blog/post_detail.html', context)
+
+def download(request):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.android.package-archive")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 def post_create(request):
     user = request.user
@@ -116,13 +138,16 @@ def post_create(request):
             post_instance.save()
             for f in files:
                 file_instance = PostFile(file=f, post=post_instance)
-                file_instance.save()
+                file_instance.save()      
 
     else:
         form = PostModelForm(instance=request.user)
         file_form = FileModelForm()
     return render(request, 'blog/post/post_form.html', {'form': form, 'file_form': file_form})
     
+
+
+
 def post_share(request, post_id):
     #retrive post by id
     post = get_object_or_404(Post, id=post_id, status='published')

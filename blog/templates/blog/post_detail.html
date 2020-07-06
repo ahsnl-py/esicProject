@@ -12,9 +12,17 @@
     </div>
     {{ post.body|linebreaks }} 
 
+    {% for file in files %}
+        <p>{{file.title}}</p>
+        <a href="{{ file.url }}" class="btn btn-dark float-right">Download</a>
+    {% endfor %}
+
       {% if post.image  %}
       <img src="{{ post.image.url }}" class="img-fluid" alt="Responsive image">
       {% endif %}
+
+
+      
 
     <p>
       {% if post.author == user %}

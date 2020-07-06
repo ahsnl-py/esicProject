@@ -43,40 +43,25 @@
       </div>
       <!-- side bar -->
         <div class="col-md-4">
+          <!--Side bar for post list and post detail-->
+          {% if posts or post %}
+            {% block sidebar %}
+            {% endblock %}
+          {% endif %}
+
+          {% if form %}
           <div class="content-section">
-
-            {% if username %}
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
-              </ul>
-            </p>
-            {% endif %}
-
-            {% if posts or post %}
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
-              </ul>
-            </p>
-            {% endif %}
-            {% if form %}
               {% block page_register %}{% endblock %}
-            {% endif %}
           </div>
+          {% endif %}
         </div> 
-    </div>
-    {% include "blog/components/footer.html" %}
-  </main>
 
+
+    </div>
+  </main>
+  {% if register or login or logout %}
+    {% include "blog/components/footer.html" %}
+  {% endif %}
   <!-- Optional JavaScript: ReactJS -->
   {% include 'blog/react/base_embed.html' %}
   {% include 'blog/react/js.html' %}
