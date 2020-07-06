@@ -8,9 +8,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000"/>
+  <!-- AwesomeFont CSS -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/v4-shims.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link href="/your-path-to-fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
   {% include 'blog/react/css.html' %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
@@ -21,37 +23,8 @@
   {% endif %}
 </head>
 <body>
-  <header class="site-header">
-    <nav class="navbar navbar-expand-md navbar-dark bg-info fixed-top">
-      <div class="container">
-        
-        <a class="navbar-brand mr-4" href="{% url 'home' %}">MSIC CLUB</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          {% if user.is_authenticated %}
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'blog:departments' %}">Department</a>
-            <a class="nav-item nav-link" href="{% url 'blog:post_list' %}">All Post</a>
-          </div>
-          {% endif %}
-          <!-- Navbar Right Side -->
-          <div class="navbar-nav">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'blog:post_create' %}">New post</a>
-            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-              <!-- if not register -->
-            {% else %}
-              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <!--Navbar section-->
+  {% include 'blog/components/navbar2.html' %}
 
 
 <!--BLOCK CONTENT-->  
@@ -100,22 +73,19 @@
             {% endif %}
           </div>
         </div> 
-
-        <div id='container'>
-          <div id='main'>
-    
-          </div>
-        </div>
     </div>
+    {% include "blog/components/footer.html" %}
   </main>
 
   <!-- Optional JavaScript: ReactJS -->
   {% include 'blog/react/base_embed.html' %}
   {% include 'blog/react/js.html' %}
 
+
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="static/js/custome.js" defer></script>
 </body>
 </html>

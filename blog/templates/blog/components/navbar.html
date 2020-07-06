@@ -1,0 +1,31 @@
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-info fixed-top">
+      <div class="container">
+
+        <a class="navbar-brand mr-4" href="{% url 'home' %}">MSIC CLUB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          {% if user.is_authenticated %}
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'blog:departments' %}">Department</a>
+            <a class="nav-item nav-link" href="{% url 'blog:post_list' %}">All Post</a>
+          </div>
+          {% endif %}
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'blog:post_create' %}">New post</a>
+            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+              <!-- if not register -->
+            {% else %}
+              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>

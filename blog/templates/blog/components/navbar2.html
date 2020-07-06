@@ -1,0 +1,65 @@
+<header class="site-header">
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-md navbar-dark bg-info fixed-top">
+
+        <div class="container">
+    
+            <a class="navbar-brand py-0" href="#"><h3 class="font-weight-bold text-white mb-0">MSIC</h3></a>
+        
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="basicExampleNav">
+        
+                <!-- Links -->
+                <ul class="navbar-nav text-uppercase">
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-normal" href="{% url 'blog:post_list' %}">
+                            Latest post
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog:departments' %}">Department</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                <!-- Links -->
+                
+                <ul class="nav navbar-nav nav-flex-icons ml-auto">
+            
+                <li class="nav-item d-none d-xl-inline-block" alt="Support" id="navbar-static-support">
+                    <a href="" class="nav-link waves-effect">
+                    <i class="fas fa-question-circle"></i><span class="d-none d-xl-inline-block ml-1">Support</span>
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><i class="fas fa-wrench"></i><span class="d-none d-xl-inline-block ml-1">Tools</span></a>
+                    <div class="dropdown-menu dropdown-primary dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'blog:post_create' %}">New Post</a>
+                    <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logoute</a>
+                    </div>
+                </li>
+                {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                {% endif %}
+                </ul>
+        
+            </div>
+            <!-- Collapsible content -->
+    
+        </div>
+    
+    </nav>
+  <!--/.Navbar-->
+</header>
+
