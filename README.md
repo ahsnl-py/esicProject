@@ -44,16 +44,24 @@ Build the front-end
 * You should find the site running on `http://localhost:3000`
 
 ### comming soon
-This is a back-up file. Features are still under constructions. Coming soon...
+Features are still under constructions. 
+| ![](devPages/registerNow.PNG)  | 
+|:--:| 
+| * Register page* |
 
-| ![](devPages/postList.PNG)  | 
+| ![](devPages/loginPage.PNG) | 
+|:--:| 
+| *Login page* |
+
+| ![](devPages/Listpage2.PNG)  | 
 |:--:| 
 | *Lists of post made by user only available when Registered* |
 
-| ![](devPages/detailList.PNG)  | 
+| ![](devPages/profile.PNG)  | 
 |:--:| 
-| *List of individual detail view of student post that can be share*  |
+| *Profile detail. Only can be modified by user*  |
 
-| ![](devPages/depListPage.PNG) | 
+| ![](devPages/createNewPost.PNG)  | 
 |:--:| 
-| *List of department pages which link to a list of subjects according to choosen department* |
+| *Create new post. You can also share files and images*  |
+
