@@ -70,7 +70,6 @@ class Post(models.Model):
     status = models.CharField(max_length=10,  
                               choices=STATUS_CHOICES, 
                               default='draft') 
-    image = models.FileField(null=True, blank=True)
 
     objects = models.Manager()
     published = PublishedManager() 
@@ -89,8 +88,14 @@ class Post(models.Model):
 
 class PostImage(models.Model):
     post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
         return self.post.title
 
+class PostFile(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='files')
+    file = models.FileField(upload_to="files/%Y/%m/%d", null=True, blank=True)
+
+    def __str__(self):
+        return self.post.title

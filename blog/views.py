@@ -11,15 +11,17 @@ from django.views.generic import (
     UpdateView, 
     DeleteView,
     ListView
+    #FormView
 )
 
-
+from .forms import PostModelForm, FileModelForm
 from .share import EmailPostForm
 from .models import (
     Post, 
     Department, 
     Subject,
-    PostImage
+    PostImage,
+    PostFile
 )
 
 
@@ -55,17 +57,17 @@ def departments(request):
     return render(request, 'blog/department.html', {'departments': departments})
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+"""class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'subject_name', 'body', 'image', 'status']
 
     def form_valid(self, form):
         form.instance.author = self.request.user 
-        return super().form_valid(form)
+        return super().form_valid(form)"""
 
 class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'subject_name', 'body', 'image', 'status']
+    fields = ['title', 'subject_name', 'body', 'status']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -102,6 +104,25 @@ class UserPostListView(ListView):
         return Post.published.filter(author=user).order_by('-publish')
 
 
+def post_create(request):
+    user = request.user
+    if request.method == 'POST':
+        form = PostModelForm(request.POST, instance=request.user)
+        file_form = FileModelForm(request.POST, request.FILES)
+        files = request.FILES.getlist('file') #field name in model
+        if form.is_valid() and file_form.is_valid():
+            post_instance = form.save(commit=False)
+            post_instance.user = user
+            post_instance.save()
+            for f in files:
+                file_instance = PostFile(file=f, post=post_instance)
+                file_instance.save()
+
+    else:
+        form = PostModelForm(instance=request.user)
+        file_form = FileModelForm()
+    return render(request, 'blog/post/post_form.html', {'form': form, 'file_form': file_form})
+    
 def post_share(request, post_id):
     #retrive post by id
     post = get_object_or_404(Post, id=post_id, status='published')
