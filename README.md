@@ -53,6 +53,10 @@ Features are still under constructions.
 |:--:| 
 | *Login page* |
 
+| ![](devPages/departmentList.PNG) | 
+|:--:| 
+| *Sort subjects accoding to Department* |
+
 | ![](devPages/Listpage2.PNG)  | 
 |:--:| 
 | *Lists of post made by user only available when Registered* |
