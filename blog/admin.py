@@ -30,7 +30,12 @@ admin.site.register(PostFile)
 
 # Register your models here.
 """Subject view in Admin"""
-admin.site.register(Subject)
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_filter = ('department_name', )
+    ordering = ('department_name', )
+    prepopulated_fields = {'subject_slug': ('subject_name',)}
+    
 
 """Subject view in Admin"""
 admin.site.register(Department)
