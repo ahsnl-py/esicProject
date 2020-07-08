@@ -1,6 +1,6 @@
 # MSIC
 ## About
-MSIC is an abbreviate of Mechanics Student In Czech. Our aim is simple. To share and communicate. With more notes available and countless tips from different students, we believe we could all achieve great results. You could be as transparent or anonymous. All we value is your story and motive to help one another. 
+MSIC is an abbreviate of Mechanical Student In Czech. Our aim is simple. To share and communicate. With more notes available and countless tips from different students, we believe we could all achieve great results. You could be as transparent or anonymous. All we value is your story and motive to help one another. 
 
 ## Want to help? follow instructions below..
 Requires Python 3.5 or higher, recommended to run in a virtual environment (virtualenv, consider using virtualenvwrapper to manage your virtual environments).
